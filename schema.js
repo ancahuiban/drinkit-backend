@@ -20,7 +20,6 @@ const typeDefs = gql`
   }
   type Mutation {
     addBeverage(
-      id: ID!
       name: String!
       beverageType: BeverageType!
       assortment: [Assortment]
@@ -30,7 +29,6 @@ const typeDefs = gql`
       score: Int
     ): Beverage
     updateBeverage(
-      id: ID!
       name: String!
       beverageType: BeverageType!
       assortment: [Assortment]
@@ -42,3 +40,54 @@ const typeDefs = gql`
     deleteBeverage(id: ID!): Beverage
   }
 `
+
+const resolvers = {
+  Query: {
+    getBeverages: (parent, args) => {
+      return Beverage.find({})
+    },
+    getBeverage: (parent, { id }) => {
+      return Beverage.findById({ id })
+    },
+  },
+  Mutation: {
+    addBeverage: (parent, args) => {
+      let Beverage = new Beverage({
+        name: args.name,
+        beverageType: args.beverageType
+        assortment: args.assortment
+        origin: args.origin
+        edition: args.edition
+        alcoholPercentage: args.alcoholPercentage
+        score: args.score
+      })
+      return Beverage.save()
+    },
+    updateBeverage: (parent, args) => {
+      if (!args.id) return
+      return Beverage.findOneAndUpdate(
+        {
+          _id: args.id,
+        },
+        {
+          $set: {
+            name: args.name,
+            beverageType: args.beverageType
+            assortment: args.assortment
+            origin: args.origin
+            edition: args.edition
+            alcoholPercentage: args.alcoholPercentage
+            score: args.score
+          },
+        },
+        { new: true },
+        (err, Beverage) => {
+          if (err) {
+            console.log("Something went wrong when you edited the beverage informations.")
+          } else {
+          }
+        },
+      )
+    },
+  },
+}
