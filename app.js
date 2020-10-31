@@ -3,12 +3,17 @@ const mongoose = require("mongoose")
 const schema = require("./schema")
 const bodyParser = require("body-parser")
 const cors = require("cors")
+const dotenv = require("dotenv")
 
+dotenv.config()
 const { ApolloServer } = require("apollo-server-express")
 
-const url = "mongodb://localhost:27017/moviesdb"
+// const url = "mongodb://localhost:27017/beveragesdb"
 
-const connect = mongoose.connect(url, { useNewUrlParser: true })
+const connect = mongoose.connect(process.env.DATABASE_URL, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
 connect.then(
   (db) => {
     console.log("Connected correctly to server!")
@@ -18,6 +23,7 @@ connect.then(
   },
 )
 
+console.log(schema.typeDefs, schema.resolvers)
 const server = new ApolloServer({
   typeDefs: schema.typeDefs,
   resolvers: schema.resolvers,

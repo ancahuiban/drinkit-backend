@@ -1,19 +1,30 @@
 const { gql } = require("apollo-server-express")
 const { Beverage } = require("./src/models/Beverage")
-const BeverageType = require("./src/models/BeverageType")
 const { Assortment } = require("./src/models/Assortments")
 
 const typeDefs = gql`
+  type BeverageType {
+    id: ID!
+    name: String!
+    assortments: [Assortment]
+  }
+
+  type Assortment {
+    id: ID!
+    name: String!
+  }
+
   type Beverage {
     id: ID!
     name: String!
-    beverageType: BeverageType!
-    assortment: [Assortment]
+    beverageTypeID: ID!
+    assortmentID: ID
     origin: String!
     edition: String
     alcoholPercentage: Int
     score: Int
   }
+
   type Query {
     getBeverages: [Beverage]
     getBeverage(id: ID!): Beverage
@@ -21,8 +32,8 @@ const typeDefs = gql`
   type Mutation {
     addBeverage(
       name: String!
-      beverageType: BeverageType!
-      assortment: [Assortment]
+      beverageTypeID: ID!
+      assortmentID: ID
       origin: String!
       edition: String
       alcoholPercentage: Int
@@ -30,8 +41,8 @@ const typeDefs = gql`
     ): Beverage
     updateBeverage(
       name: String!
-      beverageType: BeverageType!
-      assortment: [Assortment]
+      beverageTypeID: ID!
+      assortmentID: ID
       origin: String!
       edition: String
       alcoholPercentage: Int
@@ -54,12 +65,12 @@ const resolvers = {
     addBeverage: (parent, args) => {
       let Beverage = new Beverage({
         name: args.name,
-        beverageType: args.beverageType
-        assortment: args.assortment
-        origin: args.origin
-        edition: args.edition
-        alcoholPercentage: args.alcoholPercentage
-        score: args.score
+        beverageType: args.beverageType,
+        assortment: args.assortment,
+        origin: args.origin,
+        edition: args.edition,
+        alcoholPercentage: args.alcoholPercentage,
+        score: args.score,
       })
       return Beverage.save()
     },
@@ -72,18 +83,20 @@ const resolvers = {
         {
           $set: {
             name: args.name,
-            beverageType: args.beverageType
-            assortment: args.assortment
-            origin: args.origin
-            edition: args.edition
-            alcoholPercentage: args.alcoholPercentage
-            score: args.score
+            beverageType: args.beverageType,
+            assortment: args.assortment,
+            origin: args.origin,
+            edition: args.edition,
+            alcoholPercentage: args.alcoholPercentage,
+            score: args.score,
           },
         },
         { new: true },
         (err, Beverage) => {
           if (err) {
-            console.log("Something went wrong when you edited the beverage informations.")
+            console.log(
+              "Something went wrong when you edited the beverage informations.",
+            )
           } else {
           }
         },
@@ -91,3 +104,5 @@ const resolvers = {
     },
   },
 }
+
+module.exports = { typeDefs, resolvers }

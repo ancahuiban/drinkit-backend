@@ -1,6 +1,6 @@
 const mongoose = require("mongoose")
 const Schema = mongoose.Schema
-const BeverageType = require("./BeverageType")
+// const BeverageType = require("./BeverageType")
 
 const assortmentsSchema = new Schema(
   {
@@ -9,7 +9,8 @@ const assortmentsSchema = new Schema(
       required: true,
     },
     beverageType: {
-      type: BeverageType,
+      type: String,
+      enum: ["CIDER", "JUICE", "BEER", "SPIRITS"],
       required: true,
     },
   },
@@ -17,5 +18,5 @@ const assortmentsSchema = new Schema(
     timestamps: true,
   },
 )
-var Assortment = mongoose.model("Assortments", assortmentsSchema)
-module.exports = { Assortments, assortmentsSchema }
+var Assortment = mongoose.model("Assortment", assortmentsSchema)
+module.exports = { Assortment, assortmentsSchema }

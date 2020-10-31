@@ -8,11 +8,13 @@ const beverageSchema = new Schema(
       required: true,
     },
     beverageType: {
-      type: Enumerator,
+      type: String,
+      enum: ["CIDER", "JUICE", "BEER", "SPIRITS"],
       required: true,
     },
     assortment: {
-      type: Enumerator,
+      type: Schema.Types.ObjectId,
+      ref: "Assortments",
       required: true,
     },
     origin: {
@@ -41,4 +43,4 @@ const beverageSchema = new Schema(
   },
 )
 var Beverage = mongoose.model("Beverage", beverageSchema)
-module.exports = { Beverages, beverageSchema }
+module.exports = { Beverage, beverageSchema }
