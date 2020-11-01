@@ -4,15 +4,19 @@ const Schema = mongoose.Schema
 
 const assortmentsSchema = new Schema(
   {
-    assortment: {
+    name: {
       type: String,
       required: true,
     },
-    beverageType: {
-      type: String,
-      enum: ["CIDER", "JUICE", "BEER", "SPIRITS"],
-      required: true,
-    },
+    // assortment: {
+    //   type: String,
+    //   required: true,
+    // },
+    // beverageType: {
+    //   type: String,
+    //   enum: ["CIDER", "JUICE", "BEER", "SPIRITS"],
+    //   required: true,
+    // },
   },
   {
     timestamps: true,
