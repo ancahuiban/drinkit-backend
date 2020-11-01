@@ -7,15 +7,14 @@ const beverageSchema = new Schema(
       type: String,
       required: true,
     },
-    beverageType: {
+    beverageTypeID: {
       type: String,
-      enum: ["CIDER", "JUICE", "BEER", "SPIRITS"],
       required: true,
     },
-    assortment: {
+    assortmentID: {
       type: Schema.Types.ObjectId,
       ref: "Assortments",
-      required: true,
+      required: false,
     },
     origin: {
       type: String,

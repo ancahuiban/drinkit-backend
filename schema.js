@@ -88,8 +88,8 @@ const resolvers = {
     addBeverage: (parent, args) => {
       let beverage = new Beverage({
         name: args.name,
-        beverageType: args.beverageType,
-        assortment: args.assortment,
+        beverageTypeID: args.beverageTypeID,
+        assortmentID: args.assortmentID,
         origin: args.origin,
         edition: args.edition,
         alcoholPercentage: args.alcoholPercentage,
