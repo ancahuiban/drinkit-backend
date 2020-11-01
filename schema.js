@@ -1,6 +1,7 @@
 const { gql } = require("apollo-server-express")
 const { Beverage } = require("./src/models/Beverage")
 const { Assortment } = require("./src/models/Assortments")
+const { BeverageType } = require("./src/models/BeverageType")
 
 const typeDefs = gql`
   type BeverageType {
@@ -12,7 +13,6 @@ const typeDefs = gql`
   type Assortment {
     id: ID!
     name: String!
-    # beverageTypeID: ID!
   }
 
   type Beverage {
@@ -72,7 +72,7 @@ const resolvers = {
       return Beverage.findById({ id })
     },
     getBeverageTypes: (parent) => {
-      return BeverageType.find({})
+      return BeverageType.find({}).populate("assortments")
     },
     getBeverageType: (parent, { id }) => {
       return BeverageType.findById({ id })
@@ -86,7 +86,7 @@ const resolvers = {
   },
   Mutation: {
     addBeverage: (parent, args) => {
-      let Beverage = new Beverage({
+      let beverage = new Beverage({
         name: args.name,
         beverageType: args.beverageType,
         assortment: args.assortment,
@@ -95,20 +95,20 @@ const resolvers = {
         alcoholPercentage: args.alcoholPercentage,
         score: args.score,
       })
-      return Beverage.save()
+      return beverage.save()
     },
     addBeverageType: (parent, args) => {
-      let BeverageType = new BeverageType({
+      let beverageType = new BeverageType({
         name: args.name,
         assortments: args.assortments,
       })
-      return BeverageType.save()
+      return beverageType.save()
     },
     addAssortment: (parent, { name }) => {
-      let ass = new Assortment({
+      let assortment = new Assortment({
         name,
       })
-      return ass.save()
+      return assortment.save()
     },
     updateBeverage: (parent, args) => {
       if (!args.id) return
